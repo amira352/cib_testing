@@ -1,9 +1,10 @@
 package pages;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-
 public class CheckoutStepOnePage {
+
     WebDriver driver;
 
     // Locators
@@ -13,11 +14,11 @@ public class CheckoutStepOnePage {
     By continueButton = By.id("continue");
     By cancelButton = By.id("cancel");
     By errorMessage = By.cssSelector("[data-test='error']");
+
     public CheckoutStepOnePage(WebDriver driver) {
         this.driver = driver;
     }
 
-    // Actions
     public void enterFirstName(String firstName) {
         driver.findElement(firstNameField).sendKeys(firstName);
     }
@@ -34,8 +35,10 @@ public class CheckoutStepOnePage {
         driver.findElement(continueButton).click();
     }
 
-    public void clickCancel() {
+    // Links back to CartPage
+    public CartPage cancelCheckout() {
         driver.findElement(cancelButton).click();
+        return new CartPage(driver);
     }
 
     public void fillCheckoutInformation(String firstName, String lastName, String postalCode) {
@@ -49,12 +52,7 @@ public class CheckoutStepOnePage {
         clickContinue();
     }
 
-    public void cancelCheckout() {
-        clickCancel();
-    }
-
     public String getErrorMessage() {
         return driver.findElement(errorMessage).getText();
     }
-
 }
