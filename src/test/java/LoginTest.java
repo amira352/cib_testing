@@ -15,7 +15,7 @@ public class LoginTest {
 
     @BeforeMethod
     public void setUp() {
-        driver = new SafariDriver();
+        driver = new ChromeDriver();
         driver.get("https://www.saucedemo.com/");
     }
 
