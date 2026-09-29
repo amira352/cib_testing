@@ -1,58 +1,25 @@
-package tests;
-
-import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.safari.SafariDriver;
 import org.testng.Assert;
-import org.testng.ITestResult;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.InventoryPage;
 import pages.loginPage;
 
-import java.io.File;
-import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class InventoryTest {
+public class InventoryTest extends BaseTest {
 
-    WebDriver driver;
     loginPage login;
     InventoryPage inventory;
 
     @BeforeMethod
-    public void setUp() {
-        driver = new SafariDriver();
-        driver.manage().window().maximize();
+    public void initPages() {
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-        driver.get("https://www.saucedemo.com/");
 
         login = new loginPage(driver);
         inventory = new InventoryPage(driver);
-    }
-
-    @AfterMethod
-    public void tearDown(ITestResult result) {
-        if (ITestResult.FAILURE == result.getStatus()) {
-            TakesScreenshot ts = (TakesScreenshot) driver;
-            File source = ts.getScreenshotAs(OutputType.FILE);
-            File destination = new File("./screenshots/" + result.getName() + ".png");
-            try {
-                FileUtils.copyFile(source, destination);
-                System.out.println("Screenshot captured for defect: " + result.getName());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        if (driver != null) {
-            driver.quit();
-        }
     }
 
     // 1. Initial State: Ensure cart starts completely empty

@@ -2,36 +2,29 @@ import pages.CartPage;
 import pages.InventoryPage;
 import pages.loginPage;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.edge.EdgeDriver;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class CartTests {
+public class CartTests extends BaseTest {
 
-    private WebDriver driver;
     private loginPage loginPage;
     private InventoryPage inventoryPage;
     private CartPage cartPage;
 
     @BeforeMethod
-    public void setUp() {
-
-        driver = new EdgeDriver();
-
-        driver.get("https://www.saucedemo.com/");
+    public void prepareCart() {
 
         loginPage loginPage = new loginPage(driver);
         loginPage.login("standard_user", "secret_sauce");
 
         inventoryPage = new InventoryPage(driver);
 
-        inventoryPage.addProductToCart("Sauce Labs Backpack");
-        inventoryPage.addProductToCart("Sauce Labs Bike Light");
+        inventoryPage.clickAddToCart("Sauce Labs Backpack");
+        inventoryPage.clickAddToCart("Sauce Labs Bike Light");
 
-        cartPage = inventoryPage.goToCart();
+        inventoryPage.clickCart();
+        cartPage = new CartPage(driver);
     }
 
     @Test
@@ -98,13 +91,5 @@ public class CartTests {
         Assert.assertTrue(
                 driver.getCurrentUrl().contains("checkout-step-one")
         );
-    }
-
-    @AfterMethod
-    public void tearDown() {
-
-        if (driver != null) {
-            driver.quit();
-        }
     }
 }
