@@ -13,7 +13,7 @@ public class loginPage {
     By passwordField = By.id("password");
     By loginButton = By.id("login-button");
     By loginMessage = By.cssSelector("#header_container > div.header_secondary_container > span");
-
+By errorMessage = By.xpath("//*[@id=\"login_button_container\"]/div/form/div[3]/h3");
     // Constructor
     public loginPage(WebDriver driver) {
         this.driver = driver;
@@ -41,4 +41,5 @@ public class loginPage {
     public String getloginMessage() {
         return driver.findElement(loginMessage).getText();
     }
+    public String getErrorMessage(){return driver.findElement(errorMessage).getText();}
 }

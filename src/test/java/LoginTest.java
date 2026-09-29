@@ -1,6 +1,7 @@
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.safari.SafariDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -14,7 +15,7 @@ public class LoginTest {
 
     @BeforeMethod
     public void setUp() {
-        driver = new ChromeDriver();
+        driver = new SafariDriver();
         driver.get("https://www.saucedemo.com/");
     }
 
@@ -37,10 +38,10 @@ public class LoginTest {
         loginPage = new loginPage(driver);
 
         loginPage.login("wrong_user", "secret_sauce");
-
+        System.out.println(loginPage.getErrorMessage());
         Assert.assertTrue(
-                loginPage.getloginMessage().contains(
-                        "Epic sadface: Username and password do not match with any user in this service"
+                loginPage.getErrorMessage().contains(
+                        "Epic sadface: Username and password do not match any user in this service"
                 )
         );
     }
@@ -51,10 +52,10 @@ public class LoginTest {
         loginPage = new loginPage(driver);
 
         loginPage.login("standard_user", "wrong_password");
-
+        System.out.println(loginPage.getErrorMessage());
         Assert.assertTrue(
-                loginPage.getloginMessage().contains(
-                        "Epic sadface: Username and password do not match with any user in this service"
+                loginPage.getErrorMessage().contains(
+                        "Epic sadface: Username and password do not match any user in this service"
                 )
         );
     }
@@ -65,9 +66,9 @@ public class LoginTest {
         loginPage = new loginPage(driver);
 
         loginPage.login("", "secret_sauce");
-
+        System.out.println(loginPage.getErrorMessage());
         Assert.assertTrue(
-                loginPage.getloginMessage().contains(
+                loginPage.getErrorMessage().contains(
                         "Epic sadface: Username is required"
                 )
         );
@@ -79,9 +80,9 @@ public class LoginTest {
         loginPage = new loginPage(driver);
 
         loginPage.login("standard_user", "");
-
+        System.out.println(loginPage.getErrorMessage());
         Assert.assertTrue(
-                loginPage.getloginMessage().contains(
+                loginPage.getErrorMessage().contains(
                         "Epic sadface: Password is required"
                 )
         );
