@@ -31,7 +31,6 @@ public class InventoryPage {
         return By.id(buttonId);
     }
 
-    // Constructor
     public InventoryPage(WebDriver driver) {
         this.driver = driver;
     }
@@ -45,8 +44,10 @@ public class InventoryPage {
         driver.findElement(getRemoveButton(productName)).click();
     }
 
-    public void clickCart() {
+    // Navigates and returns CartPage
+    public CartPage clickCart() {
         driver.findElement(cartLink).click();
+        return new CartPage(driver);
     }
 
     public String getPageTitle() {
@@ -72,7 +73,6 @@ public class InventoryPage {
         return Integer.parseInt(driver.findElement(cartBadge).getText());
     }
 
-    // Sorting Actions
     public void selectSortOption(String visibleText) {
         Select select = new Select(driver.findElement(sortDropdown));
         select.selectByVisibleText(visibleText);
@@ -91,7 +91,6 @@ public class InventoryPage {
         List<WebElement> elements = driver.findElements(itemPrices);
         List<Double> prices = new ArrayList<>();
         for (WebElement element : elements) {
-            // Strip the "$" symbol before parsing to double
             String priceText = element.getText().replace("$", "").trim();
             prices.add(Double.parseDouble(priceText));
         }
