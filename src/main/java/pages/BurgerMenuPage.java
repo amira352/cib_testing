@@ -1,5 +1,6 @@
 package pages;
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -28,14 +29,33 @@ public class BurgerMenuPage {
     }
 
     // Actions
+    // Retry up to 3 times: if the page is still loading, the first click may be ignored
     public void openMenu() {
-        driver.findElement(menuButton).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(logoutLink));
+        for (int i = 0; i < 3; i++) {
+            wait.until(ExpectedConditions.elementToBeClickable(menuButton)).click();
+            try {
+                new WebDriverWait(driver, Duration.ofSeconds(3))
+                        .until(ExpectedConditions.visibilityOfElementLocated(logoutLink));
+                return;
+            } catch (TimeoutException e) {
+                // menu did not open, try again
+            }
+        }
+        throw new TimeoutException("Burger menu did not open after 3 attempts");
     }
 
     public void closeMenu() {
-        driver.findElement(closeButton).click();
-        wait.until(ExpectedConditions.invisibilityOfElementLocated(logoutLink));
+        for (int i = 0; i < 3; i++) {
+            wait.until(ExpectedConditions.elementToBeClickable(closeButton)).click();
+            try {
+                new WebDriverWait(driver, Duration.ofSeconds(3))
+                        .until(ExpectedConditions.invisibilityOfElementLocated(logoutLink));
+                return;
+            } catch (TimeoutException e) {
+                // menu did not close, try again
+            }
+        }
+        throw new TimeoutException("Burger menu did not close after 3 attempts");
     }
 
     public void clickAllItems() {
